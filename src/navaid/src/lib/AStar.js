@@ -1,6 +1,6 @@
-import Graph from "./Graph.js";
+import GraphMap from "./GraphMap.js";
 
-function aStarSearch(graph, startNode, goalNode) {
+function aStarSearch(graphMap, startNode, goalNode) {
   // Create a priority queue to store expanded nodes, sorted by f-score
   const pq = new PriorityQueue((a, b) => a.fScore - b.fScore);
 
@@ -25,26 +25,27 @@ function aStarSearch(graph, startNode, goalNode) {
     visited.add(currNode);
 
     // Loop through all adjacent nodes of the current node
-    for (const adjNode of graph.getAdjacentNodes(currNode)) {
+    for (const adjNode of graphMap.getAdjacentNodes(currNode)) {
       // If the adjacent node has already been visited, skip it
       if (visited.has(adjNode)) {
         continue;
       }
 
       // Calculate the tentative g-score of the adjacent node
-      const tentativeGScore = gScores[currNode] + graph.getEdgeDistance(currNode, adjNode);
+      const tentativeGScore =
+        gScores[currNode] + graphMap.getEdgeDistance(currNode, adjNode);
 
       // If we have not seen this adjacent node before, add it to the priority queue
       if (!pq.contains({ node: adjNode })) {
         parents[adjNode] = currNode;
         gScores[adjNode] = tentativeGScore;
-        const hScore = graph.getEuclideanDistance(adjNode, goalNode);
+        const hScore = graphMap.getEuclideanDistance(adjNode, goalNode);
         pq.enqueue({ node: adjNode, fScore: tentativeGScore + hScore });
       } else if (tentativeGScore < gScores[adjNode]) {
         // If we have seen this adjacent node before, but this path has a lower g-score, update its f-score
         parents[adjNode] = currNode;
         gScores[adjNode] = tentativeGScore;
-        const hScore = graph.getEuclideanDistance(adjNode, goalNode);
+        const hScore = graphMap.getEuclideanDistance(adjNode, goalNode);
         pq.update({ node: adjNode, fScore: gScores[adjNode] + hScore });
       }
     }

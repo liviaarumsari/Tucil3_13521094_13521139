@@ -1,6 +1,6 @@
 import Point from "./Point.js";
 
-class Graph {
+class GraphMap {
   constructor(adjMatrix, nodeNames, nodePoints) {
     this.adjMatrix = adjMatrix;
     this.nodeNames = nodeNames;
@@ -33,4 +33,4 @@ class Graph {
   }
 }
 
-export default Graph;
+export default GraphMap;
