@@ -66,14 +66,13 @@ const GraphVisualizer = (props) => {
           name: "dagre",
           rankDir: "LR",
         },
-        userZoomingEnabled: false,
       });
 
       cy.fit();
     }
   }, [props.mapInput.adjMatrix, props.mapInput.nodeNames]);
 
-  return <div ref={cyRef} style={{ height: "100vh", width: "100%" }} />;
+  return <div ref={cyRef} className="bg-light-primary" style={{ height: "30vh", width: "100%" }} />;
 };
 
 function getElementsFromMatrix(matrix, nodeNames) {
