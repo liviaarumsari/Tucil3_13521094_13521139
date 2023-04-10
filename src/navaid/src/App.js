@@ -1,7 +1,7 @@
 import "./App.css";
 import React from "react";
 import { useState } from "react";
-import ucs from "./UCS";
+import ucs from "./algorithms/UCS.js";
 
 function App() {
   
