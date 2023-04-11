@@ -5,6 +5,7 @@ import Point from "./lib/Point.js";
 import GraphMap from "./lib/GraphMap.js";
 import GraphVisualizer from "./components/GraphVisualizer.js";
 import Navbar from "./components/Navbar.js";
+import GoogleMaps from "./components/GoogleMaps.js";
 
 function App() {
   const [fileContent, setFileContent] = useState(null);
@@ -69,6 +70,7 @@ function App() {
           <GraphVisualizer mapInput={mapInput} path={path} />
         </div>
       )}
+      <GoogleMaps />
     </div>
   );
 }
