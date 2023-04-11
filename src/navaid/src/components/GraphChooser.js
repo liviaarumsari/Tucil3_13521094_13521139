@@ -68,7 +68,7 @@ function GraphChooser(props) {
             id="fileInput"
           />
           <button
-            htmlFor="fileInput"
+            onClick={() => document.getElementById('fileInput').click()}
             className="bg-main-primary hover:bg-main-secondary text-light-primary font-medium py-2 px-4 shadow-md rounded cursor-pointer"
           >
             Choose File
