@@ -5,6 +5,7 @@ import Point from "./lib/Point.js";
 import GraphMap from "./lib/GraphMap.js";
 import GraphVisualizer from "./components/GraphVisualizer.js";
 import Navbar from "./components/Navbar.js";
+import GoogleMaps from "./components/GoogleMaps.js";
 import GraphChooser from "./components/GraphChooser.js";
 import AlgorithmChooser from "./components/AlgorithmChooser.js";
 
@@ -41,6 +42,7 @@ function App() {
       <Navbar/>
       <GraphChooser onFileUpload={fileUploadHandler}/>
       {mapInput && <AlgorithmChooser mapInput={mapInput}/>}
+      <GoogleMaps />
     </div>
   );
 }
