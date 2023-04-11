@@ -67,4 +67,4 @@ class PriorityQueue {
   }
 }
 
-export {QElement, PriorityQueue};
+export {PriorityQueue};
