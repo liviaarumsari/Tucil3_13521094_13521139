@@ -28,7 +28,12 @@ function GraphChooser(props) {
         const size = parseInt(lines[0]);
         const adjMatrix = [];
         for (let i = 1; i <= size; i++) {
-          adjMatrix.push(lines[i].split(" ").map((x) => parseInt(x)));
+          adjMatrix.push(
+            lines[i]
+              .trim()
+              .split(" ")
+              .map((x) => parseInt(x))
+          );
         }
         const nodeNames = [];
         const nodePoints = [];
@@ -53,33 +58,48 @@ function GraphChooser(props) {
 
   return (
     <Card>
-        <div className="flex flex-col">
-            <label className="text-lg font-semibold mb-2">Upload Files</label>
-            <label className="text-sm font-light text-gray-500 mb-4">
-            Choose a file to upload. Only .txt files are supported.
-            </label>
+      <div className="flex flex-col">
+        <label className="text-lg font-semibold mb-2">Upload Files</label>
+        <label className="text-sm font-light text-gray-500 mb-4">
+          Choose a file to upload. Only .txt files are supported.
+        </label>
+      </div>
+      <div className="mb-4">
+        <input
+          type="file"
+          accept=".txt"
+          onChange={handleFileUpload}
+          className="hidden"
+          id="fileInput"
+        />
+        <button
+          onClick={() => document.getElementById("fileInput").click()}
+          className="bg-main-primary hover:bg-main-secondary text-light-primary font-medium py-2 px-4 shadow-md rounded cursor-pointer"
+        >
+          Choose File
+        </button>
+        <div className="ml-4 inline-block">{fileName}</div>
+      </div>
+      {errorMessage && <div className="text-red-500 mb-4">{errorMessage}</div>}
+      {showGraphVisualizer && (
+        <div className="flex flew-row">
+        <GraphVisualizer mapInput={fileContent} path={[]} />
+        <div className="mx-8">
+          <label className="block text-gray-700 font-bold mb-2">Nodes:</label>
+          <ul className="list-disc list-inside">
+            {fileContent.nodeNames.map((node, index) => (
+              <li
+                key={index}
+                className="text-gray-700 overflow-ellipsis overflow-hidden whitespace-nowrap list-none"
+              >
+                {index + 1}. {node}
+              </li>
+            ))}
+          </ul>
         </div>
-        <div className="mb-4">
-          <input
-            type="file"
-            accept=".txt"
-            onChange={handleFileUpload}
-            className="hidden"
-            id="fileInput"
-          />
-          <button
-            onClick={() => document.getElementById('fileInput').click()}
-            className="bg-main-primary hover:bg-main-secondary text-light-primary font-medium py-2 px-4 shadow-md rounded cursor-pointer"
-          >
-            Choose File
-          </button>
-          <div className="ml-4 inline-block">{fileName}</div>
         </div>
-        {errorMessage && (
-          <div className="text-red-500 mb-4">{errorMessage}</div>
-        )}
-        {showGraphVisualizer && <GraphVisualizer mapInput={fileContent} path={[]} />}
-      </Card>
+      )}
+    </Card>
   );
 }
 

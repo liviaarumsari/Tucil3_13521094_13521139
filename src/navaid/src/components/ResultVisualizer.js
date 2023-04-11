@@ -28,12 +28,11 @@ const ResultVisualizer = (props) => {
       setTotalDistance(/* UCS total distance */);
     } else if (props.algorithm === "A*") {
       const [pathRes, distRes] = aStarSearch(props.graph, props.startNode, props.goalNode);
-      console.log(pathRes);
-      console.log(distRes);
-      setPath(pathToEdgeID(pathRes));
+      const pathEdgeID = pathToEdgeID(pathRes);
+      setPath(pathEdgeID);
       setTotalDistance(distRes);
     }
-  }, [props.algorithm, props.startNode, props.goalNode, props.graph]);
+  }, [props.startNode, props.goalNode]);
 
   return (
     <Card>

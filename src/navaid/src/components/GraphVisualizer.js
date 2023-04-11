@@ -21,7 +21,7 @@ const GraphVisualizer = (props) => {
           {
             selector: "node",
             style: {
-              "background-color": "#0000FF",
+              "background-color": "#5cc48a",
               width: 40,
               height: 40,
               label: "data(label)",
@@ -29,7 +29,7 @@ const GraphVisualizer = (props) => {
               "text-halign": "center",
               "font-size": "16px",
               "font-weight": "bold",
-              color: "#000",
+              color: "#181c1d",
             },
           },
           {
@@ -37,9 +37,9 @@ const GraphVisualizer = (props) => {
             style: {
               "curve-style": "bezier",
               width: 2,
-              "line-color": "#7d7d7d",
+              "line-color": "#898f8a",
               "target-arrow-shape": "triangle",
-              "target-arrow-color": "#000000",
+              "target-arrow-color": "#2a2a2a",
               label: "data(weight)",
               "font-size": "14px",
               "font-weight": "bold",
@@ -70,7 +70,7 @@ const GraphVisualizer = (props) => {
 
       cy.fit();
     }
-  }, [props.mapInput.adjMatrix, props.mapInput.nodeNames]);
+  }, [props.path]);
 
   return <div ref={cyRef} className="bg-light-primary" style={{ height: "30vh", width: "100%" }} />;
 };
