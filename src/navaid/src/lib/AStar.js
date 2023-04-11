@@ -1,58 +1,66 @@
 import GraphMap from "./GraphMap.js";
+import {QElement, PriorityQueue} from "./PriorityQueue.js";
 
-function aStarSearch(graphMap, startNode, goalNode) {
+
+export default function aStarSearch(graphMap, startNode, goalNode) {
   // Create a priority queue to store expanded nodes, sorted by f-score
-  const pq = new PriorityQueue((a, b) => a.fScore - b.fScore);
+  let openNodes = new PriorityQueue();
+  openNodes.enqueue(new QElement(startNode, 0));
+  console.log(openNodes);
+  const nodeSize = graphMap.adjMatrix.length;
 
   const visited = new Set();
-  const gScores = { [startNode]: 0 };
-  const parents = {};
+  const gScores = Array(nodeSize).fill(Infinity);
+  const parents = Array(nodeSize).fill(undefined);
+  let totalDistance = 0;
 
-  // Add the starting node to the priority queue with an initial f-score of 0
-  pq.enqueue({ node: startNode, fScore: 0 });
-
-  // Loop until the priority queue is empty
-  while (!pq.isEmpty()) {
+  // Loop until the priority enqueue is empty
+  while (!openNodes.isEmpty()) {
     // Dequeue the node with the lowest f-score
-    const { node: currNode } = pq.dequeue();
+    let currNode = openNodes.dequeue().element;
 
     // If we have reached the goal node, reconstruct and return the path
     if (currNode === goalNode) {
-      return reconstructPath(parents, currNode);
+      const path = reconstructPath(parents, currNode);
+      return [path, totalDistance];
     }
 
-    // Add the current node to the set of visited nodes
-    visited.add(currNode);
+    console.log(currNode);
 
     // Loop through all adjacent nodes of the current node
-    for (const adjNode of graphMap.getAdjacentNodes(currNode)) {
-      // If the adjacent node has already been visited, skip it
-      if (visited.has(adjNode)) {
-        continue;
-      }
+    for (const adjNode of graphMap.getAdjacentNodes(currNode.element)) {
+      console.log('adjNode:', adjNode);
 
       // Calculate the tentative g-score of the adjacent node
       const tentativeGScore =
-        gScores[currNode] + graphMap.getEdgeDistance(currNode, adjNode);
+        gScores[currNode] + graphMap.getEdgeDistance(currNode.element, adjNode);
 
-      // If we have not seen this adjacent node before, add it to the priority queue
-      if (!pq.contains({ node: adjNode })) {
+      console.log(adjNode);
+      console.log(goalNode);
+      console.log(openNodes);
+
+      if (tentativeGScore < gScores[adjNode]) {
         parents[adjNode] = currNode;
         gScores[adjNode] = tentativeGScore;
-        const hScore = graphMap.getEuclideanDistance(adjNode, goalNode);
-        pq.enqueue({ node: adjNode, fScore: tentativeGScore + hScore });
-      } else if (tentativeGScore < gScores[adjNode]) {
-        // If we have seen this adjacent node before, but this path has a lower g-score, update its f-score
-        parents[adjNode] = currNode;
-        gScores[adjNode] = tentativeGScore;
-        const hScore = graphMap.getEuclideanDistance(adjNode, goalNode);
-        pq.update({ node: adjNode, fScore: gScores[adjNode] + hScore });
+        const hScore = graphMap.getEuclideanDistance(adjNode.element, goalNode);
+        if (openNodes.find(obj => obj.element === adjNode)) {
+          openNodes.updates(adjNode, gScores[adjNode] + hScore);
+        }
+        else {
+          openNodes.enqueue(new QElement(adjNode, gScores[adjNode] + hScore));
+        }
       }
+    }
+
+    // Add the distance traveled along the edge to the total distance
+    const parent = parents[currNode];
+    if (parent !== undefined) {
+      totalDistance += graphMap.getEdgeDistance(parent, currNode);
     }
   }
 
   // If we have exhausted all nodes without finding a path, return null
-  return null;
+  return [null, null];
 }
 
 function reconstructPath(parents, currNode) {

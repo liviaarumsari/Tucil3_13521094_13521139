@@ -11,13 +11,15 @@ class GraphMap {
     return this.nodeNames[nodeIndex];
   }
 
-  getAdjacentNodes(nodeName) {
-    const nodeIndex = this.nodeNames.indexOf(nodeName);
+  getAdjacentNodes(nodeIndex) {
+    console.log(this.adjMatrix);
+    console.log(nodeIndex);
+    console.log(this.adjMatrix[nodeIndex]);
     const adjacentNodes = [];
 
     for (let i = 0; i < this.adjMatrix[nodeIndex].length; i++) {
       if (this.adjMatrix[nodeIndex][i] > 0) {
-        adjacentNodes.push(this.nodeNames[i]);
+        adjacentNodes.push(i);
       }
     }
 
