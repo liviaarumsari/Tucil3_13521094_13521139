@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import GraphVisualizer from "./GraphVisualizer.js";
 import Card from "./Card.js";
-import aStarSearch from "../lib/aStar.js";
+import aStarSearch from "../lib/AStar.js";
+import ucs from "../lib/UCS.js";
 
 const ResultVisualizer = (props) => {
   const [path, setPath] = useState([]);
@@ -22,10 +23,13 @@ const ResultVisualizer = (props) => {
 
   useEffect(() => {
     if (props.algorithm === "UCS") {
+      console.log(props.graph.adjMatrix)
       // Calculate path and total distance using UCS algorithm
       // ...
+      const [prioqueue,count] = ucs(props.graph.adjMatrix,props.startNode,props.goalNode)
+
       setPath(/* UCS path */);
-      setTotalDistance(/* UCS total distance */);
+      setTotalDistance(count);
     } else if (props.algorithm === "A*") {
       const [pathRes, distRes] = aStarSearch(props.graph, props.startNode, props.goalNode);
       console.log(pathRes);

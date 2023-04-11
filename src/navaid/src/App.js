@@ -10,7 +10,6 @@ import GraphChooser from "./components/GraphChooser.js";
 import AlgorithmChooser from "./components/AlgorithmChooser.js";
 
 function App() {
-  const [fileContent, setFileContent] = useState(null);
   const [mapInput, setMapInput] = useState(null);
 
   const path = ["0-1", "3-4"];
