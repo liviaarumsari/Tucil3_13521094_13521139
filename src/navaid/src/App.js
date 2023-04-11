@@ -6,6 +6,7 @@ import GraphMap from "./lib/GraphMap.js";
 import GraphVisualizer from "./components/GraphVisualizer.js";
 import Navbar from "./components/Navbar.js";
 import GraphChooser from "./components/GraphChooser.js";
+import AlgorithmChooser from "./components/AlgorithmChooser.js";
 
 function App() {
   const [fileContent, setFileContent] = useState(null);
@@ -39,7 +40,7 @@ function App() {
     <div className="bg-light-primary">
       <Navbar/>
       <GraphChooser onFileUpload={fileUploadHandler}/>
-      
+      {mapInput && <AlgorithmChooser mapInput={mapInput}/>}
     </div>
   );
 }
