@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import '../index.css'
 
-function Navbar() {
+function Navbar(props) {
   const [activePage, setActivePage] = useState('File Input');
 
   return (
@@ -12,7 +12,11 @@ function Navbar() {
           className={`mr-4 text-white ${
             activePage === 'File Input' ? 'underline' : ''
           }`}
-          onClick={() => setActivePage('File Input')}
+          onClick={() => 
+            {
+              setActivePage('File Input');
+              props.onChoosePage("File Input");
+            }}
         >
           File Input
         </button>
@@ -20,7 +24,11 @@ function Navbar() {
           className={`text-white ${
             activePage === 'Google Maps' ? 'underline' : ''
           }`}
-          onClick={() => setActivePage('Google Maps')}
+          onClick={() => 
+            {
+              setActivePage('Google Maps');
+              props.onChoosePage("Google Maps");
+            }}
         >
           Google Maps
         </button>
