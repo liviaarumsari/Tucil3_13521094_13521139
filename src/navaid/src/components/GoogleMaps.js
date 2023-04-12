@@ -22,7 +22,6 @@ const GoogleMaps = (props) => {
     lng: 107.60981,
   });
   const fromText = props.fromInput;
-
   useEffect(() => {
     if ((props.adjMatrix, props.routes)) {
       const adjMatrix = props.adjMatrix;
@@ -35,15 +34,18 @@ const GoogleMaps = (props) => {
         const [x, y] = lineParts[1].split(" ").map((s) => parseFloat(s));
         nodePoints.push({ lat: x, lng: y });
       }
+      console.log(nodePoints)
       let newMarkers = markers.concat(nodePoints);
       setMarkers(newMarkers);
       setMapCenter(newMarkers[0]);
       let points = [];
-
+      console.log("Ini routes")
+      console.log(routes)
       for (let i = 0; i < routes.length; i++) {
-        points.push(nodePoints[i]);
+        points.push(nodePoints[routes[i]]);
       }
       let newPoly = polylinePoints.concat(points);
+      console.log(newPoly)
       setPolylinePoints(newPoly);
     }
   }, []);
