@@ -6,6 +6,7 @@ import {
   Marker,
   Polyline,
 } from "@react-google-maps/api";
+import haversine from "haversine-distance";
 
 const GoogleMaps = (props) => {
   const { isLoaded } = useJsApiLoader({
@@ -14,9 +15,8 @@ const GoogleMaps = (props) => {
   });
   const [map, setMap] = useState(null);
   const [markers, setMarkers] = useState([]);
-  const [clickedCoordinates, setClickedCoordinates] = useState([]);
   const [polylinePoints, setPolylinePoints] = useState([]);
-  const [count,setCount] = useState(0)
+  const [count, setCount] = useState(0);
   const [mapCenter, setMapCenter] = useState({
     lat: -6.914744,
     lng: 107.60981,
@@ -49,31 +49,29 @@ const GoogleMaps = (props) => {
   }, []);
 
   const onMapClick = (e) => {
-    console.log(fromText)
     if (!fromText) {
       const newObj = {
         lat: e.latLng.lat(),
         lng: e.latLng.lng(),
       };
-      setMarkers([...markers,newObj])
+      if (markers.length > 0) {
+        let temp = markers[markers.length - 1];
+        let newCount = count + haversine(temp, newObj);
+        setCount(newCount);
+      }
+      setMarkers([...markers, newObj]);
       setPolylinePoints([...polylinePoints, newObj]);
     }
   };
-  const handleMarkerClicked = (e) => {
-    const newObj = {
-      lat: e.latLng.lat(),
-      lng: e.latLng.lng(),
-    };
-    console.log("Masuk clicked");
-    console.log(newObj);
-    setPolylinePoints([...polylinePoints, newObj]);
-  };
+
   if (!isLoaded) {
     return <div>Loading...</div>;
   }
 
   return (
     <div>
+      {!fromText && <p>Distance : {count} </p>}
+
       <div class="h-screen">
         <div class="h-full">
           <GoogleMap
@@ -93,7 +91,6 @@ const GoogleMaps = (props) => {
               <Marker
                 key={index}
                 position={{ lat: marker.lat, lng: marker.lng }}
-                onClick={() => handleMarkerClicked}
               />
             ))}
             {polylinePoints.length > 1 && (
