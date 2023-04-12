@@ -1,9 +1,10 @@
 # Tucil3_13521094_13521139
-## Implementasi Algoritma UCS dan A* untuk Menentukan Lintasan Terpendek dengan Javascript
+Implementasi Algoritma UCS dan A* untuk Menentukan Lintasan Terpendek dengan Javascript dalam bentuk web-based application
 
 ## **Table of Contents**
 * [General Information](#general-information)
 * [Requirements](#requirements)
+* [Features](#features)
 * [How to Run](#how-to-run)
 * [Screenshot](#screenshot)
 * [Author](#author)
@@ -13,6 +14,33 @@ Algoritma UCS (Uniform cost search) dan A* (atau A star) dapat digunakan untuk m
 
 ## **Requirements**
 Untuk menggunakan program ini, Anda harus install *npm* pada perangkat yang digunakan. 
+
+## **Features**
+* Membaca graf dari file input dengan format sebagai berikut. File test case dapat dilihat pada folder 'test'.
+```sh 
+8 // Jumlah simpul
+0 10 5 -1 -1 -1 -1 -1 // Adjacency matrix
+10 0 -1 -1 5 -1 -1 10
+-1 -1 0 -1 40 -1 20 -1
+30 -1 -1 0 20 -1 -1 -1
+-1 5 40 -1 0 -1 5 -1
+-1 -1 35 -1 40 0 -1 -1
+-1 -1 -1 -1 -1 -1 0 -1
+-1 -1 -1 -1 40 -1 20 0
+Simpul 1:1 3 // Nama simpul:titik koordinat simpul
+Simpul 2:3 5
+Simpul 3:12 0
+Simpul 4:12 4
+Simpul 5:10 4
+Simpul 6:5 4
+Simpul 7:2 9
+Simpul 8:8 6
+```
+* Menampilkan visualisasi graf
+* Mencari lintasan terpendek dengan algoritma UCS dan A*
+* Menampilkan lintasan terpendek dan total jarak
+* Menampilkan graf dan lintasan pada Google Maps
+* Memilih graf dari Google Maps
 
 ## **How to Run**
 ### **Setup**
