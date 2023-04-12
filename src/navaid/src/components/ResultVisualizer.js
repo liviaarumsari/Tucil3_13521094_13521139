@@ -9,8 +9,8 @@ const ResultVisualizer = (props) => {
   const [path, setPath] = useState([]);
   const [totalDistance, setTotalDistance] = useState(0);
   const [isPathFound, setIsPathFound] = useState(false);
-  const [maps, setMaps] = useState(false)
-  const [routes,setRoutes] = useState([])
+  const [maps, setMaps] = useState(false);
+  const [routes, setRoutes] = useState([]);
   const pathToEdgeID = (pathArr) => {
     return pathArr.reduce((acc, curr, index, arr) => {
       if (index === 0) {
@@ -37,9 +37,9 @@ const ResultVisualizer = (props) => {
         setPath(pathEdgeID);
         setTotalDistance(count);
         setIsPathFound(true);
-        setRoutes(prioqueue)
-      }else{
-        setIsPathFound(false)
+        setRoutes(prioqueue);
+      } else {
+        setIsPathFound(false);
       }
     } else if (props.algorithm === "A*") {
       const [pathRes, distRes] = aStarSearch(
@@ -49,7 +49,7 @@ const ResultVisualizer = (props) => {
       );
       if (pathRes !== null) {
         setIsPathFound(true);
-        setRoutes(pathRes)
+        setRoutes(pathRes);
         const pathEdgeID = pathToEdgeID(pathRes);
         setPath(pathEdgeID);
         setTotalDistance(distRes);
@@ -57,7 +57,7 @@ const ResultVisualizer = (props) => {
         setIsPathFound(false);
       }
     }
-  }, [props.startNode, props.goalNode, props.algorithm,props.graph]);
+  }, [props.startNode, props.goalNode, props.algorithm, props.graph]);
 
   return (
     <Card>
@@ -75,24 +75,29 @@ const ResultVisualizer = (props) => {
           <div className="text-center mt-4">
             <button
               className="bg-main-primary hover:bg-main-secondary text-light-primary font-medium py-2 px-4 w-full shadow-md rounded cursor-pointer"
-              onClick={() =>setMaps(true)}
+              onClick={() => setMaps(true)}
             >
               Google Maps
             </button>
           </div>
         </>
       )}
-      {!isPathFound &&  (
+      {!isPathFound && (
         <div className="text-center mt-4">
           <p className="text-gray-700 font-bold mb-2">There is no path found</p>
         </div>
       )}
-      {maps && 
-        <GoogleMaps startNode = {props.startNode} goalNode = {props.goalNode} adjMatrix = {props.content} routes={routes} />
-      }
-
+      {maps && (
+        <GoogleMaps
+          startNode={props.startNode}
+          goalNode={props.goalNode}
+          adjMatrix={props.content}
+          routes={routes}
+          fromInput={true}
+        />
+      )}
     </Card>
   );
 };
 
-export default ResultVisualizer
+export default ResultVisualizer;

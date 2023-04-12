@@ -8,53 +8,56 @@ import {
 } from "@react-google-maps/api";
 
 const GoogleMaps = (props) => {
-  console.log(props);
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: "AIzaSyCkEj30-VdzF1H9z1oGdkktZTrzDLrrl-Y",
     libraries: ["places"],
   });
-  const [map, setMap] = useState(/** @type google.maps.Map */ (null));
+  const [map, setMap] = useState(null);
   const [markers, setMarkers] = useState([]);
   const [clickedCoordinates, setClickedCoordinates] = useState([]);
-  const [errorMessage, setErrorMessage] = useState("");
   const [polylinePoints, setPolylinePoints] = useState([]);
-
+  const [count,setCount] = useState(0)
   const [mapCenter, setMapCenter] = useState({
     lat: -6.914744,
     lng: 107.60981,
   });
-  console.log("Ini props : ");
-  console.log(props);
-  const adjMatrix = props.adjMatrix;
-  const size = parseInt(adjMatrix[0]);
-  const lines = props.adjMatrix;
-  const routes = props.routes
+  const fromText = props.fromInput;
+
   useEffect(() => {
-    const nodePoints = [];
-    for (let i = size + 1; i < lines.length; i++) {
-      const lineParts = lines[i].split(":");
-      const [x, y] = lineParts[1].split(" ").map((s) => parseFloat(s));
-      nodePoints.push({ lat: x, lng: y });
+    if ((props.adjMatrix, props.routes)) {
+      const adjMatrix = props.adjMatrix;
+      const size = parseInt(adjMatrix[0]);
+      const lines = props.adjMatrix;
+      const routes = props.routes;
+      const nodePoints = [];
+      for (let i = size + 1; i < lines.length; i++) {
+        const lineParts = lines[i].split(":");
+        const [x, y] = lineParts[1].split(" ").map((s) => parseFloat(s));
+        nodePoints.push({ lat: x, lng: y });
+      }
+      let newMarkers = markers.concat(nodePoints);
+      setMarkers(newMarkers);
+      setMapCenter(newMarkers[0]);
+      let points = [];
+
+      for (let i = 0; i < routes.length; i++) {
+        points.push(nodePoints[i]);
+      }
+      let newPoly = polylinePoints.concat(points);
+      setPolylinePoints(newPoly);
     }
-    let newMarkers = markers.concat(nodePoints);
-    setMarkers(newMarkers);
-    setMapCenter(newMarkers[0]);
-    let points = []
-    
-    for(let i = 0 ; i < routes.length;i++){
-      points.push(nodePoints[i])
-    }
-    let newPoly = polylinePoints.concat(points)
-    setPolylinePoints(newPoly)
-    console.log("Ini polyline points ",polylinePoints)
   }, []);
 
   const onMapClick = (e) => {
-    const newObj = {
-      lat: e.latLng.lat(),
-      lng: e.latLng.lng(),
-    };
-    setMarkers([...markers, newObj]);
+    console.log(fromText)
+    if (!fromText) {
+      const newObj = {
+        lat: e.latLng.lat(),
+        lng: e.latLng.lng(),
+      };
+      setMarkers([...markers,newObj])
+      setPolylinePoints([...polylinePoints, newObj]);
+    }
   };
   const handleMarkerClicked = (e) => {
     const newObj = {
@@ -71,7 +74,6 @@ const GoogleMaps = (props) => {
 
   return (
     <div>
-      {errorMessage && <div>Error...</div>}
       <div class="h-screen">
         <div class="h-full">
           <GoogleMap
@@ -84,7 +86,7 @@ const GoogleMaps = (props) => {
               mapTypeControl: false,
               fullscreenControl: false,
             }}
-            onClick={() => onMapClick}
+            onClick={onMapClick}
             onLoad={(map) => setMap(map)}
           >
             {markers.map((marker, index) => (

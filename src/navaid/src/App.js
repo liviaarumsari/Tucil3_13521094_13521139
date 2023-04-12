@@ -32,7 +32,7 @@ function App() {
         </>
       }
       {activePage !== "File Input" &&
-        <GoogleMaps />
+        <GoogleMaps fromInput={false} />
       }
     </div>
   );
