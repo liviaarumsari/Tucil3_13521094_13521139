@@ -6,8 +6,8 @@ const AlgorithmChooser = (props) => {
   const [isUCS, setIsUCS] = useState(false);
   const [isAStar, setIsAStar] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
-  const [startNode, setStartNode] = useState("");
-  const [goalNode, setGoalNode] = useState("");
+  const [startNode, setStartNode] = useState("0");
+  const [goalNode, setGoalNode] = useState("0");
   const [errorMessage, setErrorMessage] = useState("");
 
   const handleUCSChange = () => {
@@ -19,11 +19,19 @@ const AlgorithmChooser = (props) => {
   };
 
   const handleStartNodeChange = (event) => {
-    setStartNode(event.target.value);
+    const selectedIndex = event.target.selectedIndex;
+    const selectedValue = event.target.options[selectedIndex].value;
+    console.log(selectedValue);
+    setStartNode(selectedValue);
   };
 
   const handleGoalNodeChange = (event) => {
-    setGoalNode(event.target.value);
+    // Get the index of the selected option
+    const selectedIndex = event.target.selectedIndex;
+    // Get the value of the selected option by using the index to access the options array
+    const selectedValue = event.target.options[selectedIndex].value;
+    console.log(selectedValue);
+    setGoalNode(selectedValue);
   };
 
   const handleSearch = () => {
@@ -87,11 +95,12 @@ const AlgorithmChooser = (props) => {
                 value={startNode}
                 onChange={handleStartNodeChange}
               >
-                {props.mapInput && props.mapInput.adjMatrix.map((row, rowIndex) => (
-                  <option key={`startNode-${rowIndex}`} value={rowIndex}>
-                    {rowIndex+1}
-                  </option>
-                ))}
+                {props.mapInput &&
+                  props.mapInput.adjMatrix.map((row, rowIndex) => (
+                    <option key={`startNode-${rowIndex}`} value={rowIndex}>
+                      {rowIndex + 1}
+                    </option>
+                  ))}
               </select>
             </div>
             <div className="flex flex-col">
@@ -102,11 +111,12 @@ const AlgorithmChooser = (props) => {
                 value={goalNode}
                 onChange={handleGoalNodeChange}
               >
-                {props.mapInput && props.mapInput.adjMatrix.map((row, rowIndex) => (
-                  <option key={`startNode-${rowIndex}`} value={rowIndex}>
-                    {rowIndex+1}
-                  </option>
-                ))}
+                {props.mapInput &&
+                  props.mapInput.adjMatrix.map((row, rowIndex) => (
+                    <option key={`startNode-${rowIndex}`} value={rowIndex}>
+                      {rowIndex + 1}
+                    </option>
+                  ))}
               </select>
             </div>
           </div>
@@ -127,16 +137,16 @@ const AlgorithmChooser = (props) => {
       {isSearching && isUCS && (
         <ResultVisualizer
           algorithm={"UCS"}
-          startNode={startNode - 1}
-          goalNode={goalNode - 1}
+          startNode={startNode}
+          goalNode={goalNode}
           graph={props.mapInput}
         />
       )}
       {isSearching && isAStar && (
         <ResultVisualizer
           algorithm={"A*"}
-          startNode={startNode - 1}
-          goalNode={goalNode - 1}
+          startNode={startNode}
+          goalNode={goalNode}
           graph={props.mapInput}
         />
       )}

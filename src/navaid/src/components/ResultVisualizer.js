@@ -7,7 +7,7 @@ import ucs from "../lib/UCS.js";
 const ResultVisualizer = (props) => {
   const [path, setPath] = useState([]);
   const [totalDistance, setTotalDistance] = useState(0);
-  const [isPathFound, setIsPathFound] = useState(true);
+  const [isPathFound, setIsPathFound] = useState(false);
 
   const pathToEdgeID = (pathArr) => {
     return pathArr.reduce((acc, curr, index, arr) => {
@@ -36,12 +36,14 @@ const ResultVisualizer = (props) => {
       setPath(/* UCS path */);
       setTotalDistance(count);
     } else if (props.algorithm === "A*") {
+      console.log(props.startNode, props.goalNode);
       const [pathRes, distRes] = aStarSearch(
         props.graph,
-        props.startNode,
-        props.goalNode
+        parseInt(props.startNode),
+        parseInt(props.goalNode)
       );
-      if (pathRes) {
+      console.log(pathRes);
+      if (pathRes !== null) {
         setIsPathFound(true);
         const pathEdgeID = pathToEdgeID(pathRes);
         setPath(pathEdgeID);
