@@ -1,3 +1,4 @@
+13
 0 -1 -1 -1 -1 -1 -1 -1 -1 -1 140 118 75                  
 -1 0 -1 -1 211 -1 -1 -1 101 -1 -1 -1 -1   
 -1 -1 0 -1 -1 -1 -1 -1 138 146 -1 -1 -1
@@ -11,3 +12,16 @@
 140 -1 -1 -1 99 -1 -1 151 -1 80 0 -1 -1
 118 -1 -1 -1 -1 111 -1 -1 -1 -1 -1 0 -1
 75 -1 -1 -1 -1 -1 -1 71 -1 -1 -1 -1 0
+Institut Teknologi Bandung:0 0
+Masjid Salman:5 20
+Dipatiukur:14 35
+Dago Asri:-15 80
+Cisitu Indah:-35 85
+Kimia Farma Dago:10 65
+Cisitu Lama:-10 50
+Cisitu Baru:-5 35
+Ciwalk:-50 20
+Tubagus Ismail:25 50
+Borma:10 120
+Pizza Hut:12 -95
+Super Indo:12 -70
