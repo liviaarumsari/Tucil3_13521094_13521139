@@ -51,14 +51,16 @@ function getNodes(adjMatrix,visited){
 
 export default function ucs(adjMatrix, startNode, targetNode) {
     // Banyaknya nodes
-    
+    if(startNode === targetNode){
+        let nodes = [startNode]
+        return [nodes,0]
+    }
     const numNodes = adjMatrix.length;
     let visited = Array(numNodes).fill(false);
     let start = [startNode];
     visited[startNode] = true;
     newQueue(start,0);
     getNodes(adjMatrix,visited);
-    let i = 0;
     while(getLastElement(prioqueue[0]) !== targetNode && prioqueue.length !== 0){
         getNodes(adjMatrix,visited)
     }
