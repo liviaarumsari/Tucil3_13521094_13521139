@@ -1,7 +1,12 @@
-import GraphMap from "./GraphMap.js";
-import {PriorityQueue} from "./PriorityQueue.js";
+import { PriorityQueue } from "./PriorityQueue.js";
 
-
+/**
+ *
+ * @param {GraphMap} graphMap
+ * @param {Number} startNode
+ * @param {Number} goalNode
+ * @returns path and total distance found based on A* search
+ */
 export default function aStarSearch(graphMap, startNode, goalNode) {
   // Create a priority queue to store expanded nodes, sorted by f-score
   let openNodes = new PriorityQueue();
@@ -26,9 +31,9 @@ export default function aStarSearch(graphMap, startNode, goalNode) {
       return [path, totalDistance];
     }
 
-
     // Loop through all adjacent nodes of the current node
     for (const adjNode of graphMap.getAdjacentNodes(currNode)) {
+      console.log("adjNode:", adjNode);
 
       // Calculate the tentative g-score of the adjacent node
       const tentativeGScore =
@@ -38,22 +43,25 @@ export default function aStarSearch(graphMap, startNode, goalNode) {
         parents[adjNode] = currNode;
         gScores[adjNode] = tentativeGScore;
         const hScore = graphMap.getEuclideanDistance(adjNode, goalNode);
-        if (openNodes.items.find(obj => obj.element === adjNode)) {
+        if (openNodes.items.find((obj) => obj.element === adjNode)) {
           openNodes.updates(adjNode, gScores[adjNode] + hScore);
-        }
-        else {
+        } else {
           openNodes.enqueue(adjNode, gScores[adjNode] + hScore);
         }
       }
     }
-
-    
   }
 
   // If we have exhausted all nodes without finding a path, return null
   return [null, null];
 }
 
+/**
+ *
+ * @param {Number[]} parents Array of parents every node
+ * @param {Number} currNode
+ * @returns Array of nodes to be visited to reach the current node
+ */
 function reconstructPath(parents, currNode) {
   // Recursively reconstruct the path from the goal node to the start node
   if (parents[currNode] === undefined) {
@@ -65,10 +73,16 @@ function reconstructPath(parents, currNode) {
   }
 }
 
+/**
+ *
+ * @param {Number[]} path
+ * @param {GraphMap} graphMap
+ * @returns total distance from path
+ */
 function countTotalDistance(path, graphMap) {
   let distance = 0;
-  for (let i=0;i<path.length-1;i++) {
-    distance += graphMap.getEdgeDistance(path[i], path[i+1]);
+  for (let i = 0; i < path.length - 1; i++) {
+    distance += graphMap.getEdgeDistance(path[i], path[i + 1]);
   }
   return distance;
 }

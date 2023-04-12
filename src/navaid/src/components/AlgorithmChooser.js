@@ -24,9 +24,7 @@ const AlgorithmChooser = (props) => {
   };
 
   const handleGoalNodeChange = (event) => {
-    // Get the index of the selected option
     const selectedIndex = event.target.selectedIndex;
-    // Get the value of the selected option by using the index to access the options array
     const selectedValue = event.target.options[selectedIndex].value;
     setGoalNode(selectedValue);
   };
