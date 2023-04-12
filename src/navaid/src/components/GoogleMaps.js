@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import {
   useJsApiLoader,
@@ -7,51 +7,47 @@ import {
   Polyline,
 } from "@react-google-maps/api";
 
-const GoogleMaps = () => {
+const GoogleMaps = (props) => {
+  console.log(props);
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: "AIzaSyCkEj30-VdzF1H9z1oGdkktZTrzDLrrl-Y",
     libraries: ["places"],
   });
   const [map, setMap] = useState(/** @type google.maps.Map */ (null));
   const [markers, setMarkers] = useState([]);
-  const [fileName, setFileName] = useState("");
-  const [coordinates, setCoordinates] = useState(null);
+  const [clickedCoordinates, setClickedCoordinates] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
+  const [polylinePoints, setPolylinePoints] = useState([]);
+
   const [mapCenter, setMapCenter] = useState({
     lat: -6.914744,
     lng: 107.60981,
   });
-
-  const handleFileUpload = (event) => {
-    const file = event.target.files[0];
-    const fileNameParts = file.name.split(".");
-    const fileExtension = fileNameParts[fileNameParts.length - 1];
-    if (fileExtension !== "txt") {
-      setErrorMessage("Invalid file type. Please upload a .txt file.");
-    } else {
-      setFileName(file.name);
-      setErrorMessage("");
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const contents = e.target.result;
-        const lines = contents.split(/\r?\n/); // Split by new lines
-        const size = parseInt(lines[0]);
-        const nodePoints = [];
-        for (let i = size + 1; i < lines.length; i++) {
-          const lineParts = lines[i].split(":");
-          const [x, y] = lineParts[1].split(" ").map((s) => parseFloat(s));
-          nodePoints.push({ lat: x, lng: y });
-        }
-        let newMarkers = markers.concat(nodePoints)
-        console.log(newMarkers)
-        setMarkers(newMarkers)
-        setCoordinates(nodePoints);
-      };
-      reader.readAsText(file);
+  console.log("Ini props : ");
+  console.log(props);
+  const adjMatrix = props.adjMatrix;
+  const size = parseInt(adjMatrix[0]);
+  const lines = props.adjMatrix;
+  const routes = props.routes
+  useEffect(() => {
+    const nodePoints = [];
+    for (let i = size + 1; i < lines.length; i++) {
+      const lineParts = lines[i].split(":");
+      const [x, y] = lineParts[1].split(" ").map((s) => parseFloat(s));
+      nodePoints.push({ lat: x, lng: y });
     }
-  };
-
-  const [polylinePoints, setPolylinePoints] = useState([]);
+    let newMarkers = markers.concat(nodePoints);
+    setMarkers(newMarkers);
+    setMapCenter(newMarkers[0]);
+    let points = []
+    
+    for(let i = 0 ; i < routes.length;i++){
+      points.push(nodePoints[i])
+    }
+    let newPoly = polylinePoints.concat(points)
+    setPolylinePoints(newPoly)
+    console.log("Ini polyline points ",polylinePoints)
+  }, []);
 
   const onMapClick = (e) => {
     const newObj = {
@@ -59,6 +55,14 @@ const GoogleMaps = () => {
       lng: e.latLng.lng(),
     };
     setMarkers([...markers, newObj]);
+  };
+  const handleMarkerClicked = (e) => {
+    const newObj = {
+      lat: e.latLng.lat(),
+      lng: e.latLng.lng(),
+    };
+    console.log("Masuk clicked");
+    console.log(newObj);
     setPolylinePoints([...polylinePoints, newObj]);
   };
   if (!isLoaded) {
@@ -67,7 +71,6 @@ const GoogleMaps = () => {
 
   return (
     <div>
-      <input type="file" onChange={handleFileUpload}></input>
       {errorMessage && <div>Error...</div>}
       <div class="h-screen">
         <div class="h-full">
@@ -81,13 +84,14 @@ const GoogleMaps = () => {
               mapTypeControl: false,
               fullscreenControl: false,
             }}
-            onClick={onMapClick}
+            onClick={() => onMapClick}
             onLoad={(map) => setMap(map)}
           >
             {markers.map((marker, index) => (
               <Marker
                 key={index}
                 position={{ lat: marker.lat, lng: marker.lng }}
+                onClick={() => handleMarkerClicked}
               />
             ))}
             {polylinePoints.length > 1 && (

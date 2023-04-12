@@ -25,6 +25,7 @@ function GraphChooser(props) {
       reader.onload = (e) => {
         const contents = e.target.result;
         const lines = contents.split(/\r?\n/); // Split by new lines
+        props.setContent(lines)
         const size = parseInt(lines[0]);
         const adjMatrix = [];
         for (let i = 1; i <= size; i++) {
@@ -37,6 +38,8 @@ function GraphChooser(props) {
         }
         const nodeNames = [];
         const nodePoints = [];
+        console.log("Ini graph chooser : ")
+        console.log(lines)
         for (let i = size + 1; i < lines.length; i++) {
           const lineParts = lines[i].split(":");
           const simpul = lineParts[0].trim();
@@ -44,18 +47,18 @@ function GraphChooser(props) {
           nodeNames.push(simpul);
           nodePoints.push(new Point(x, y));
         }
-        console.log(adjMatrix);
-        console.log(nodeNames);
-        console.log(nodePoints);
+        console.log(nodeNames)
+        console.log(adjMatrix)
         let mapInput = new GraphMap(adjMatrix, nodeNames, nodePoints);
         props.onFileUpload(mapInput);
         setFileContent(mapInput);
+        console.log("Isi File Content : ")
+        console.log(fileContent)
         setShowGraphVisualizer(true);
       };
       reader.readAsText(file);
     }
   };
-
   return (
     <Card>
       <div className="flex flex-col">

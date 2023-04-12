@@ -6,7 +6,6 @@ export default function aStarSearch(graphMap, startNode, goalNode) {
   // Create a priority queue to store expanded nodes, sorted by f-score
   let openNodes = new PriorityQueue();
   openNodes.enqueue(startNode, 0);
-  console.log(openNodes);
   const nodeSize = graphMap.adjMatrix.length;
 
   const gScores = Array(nodeSize).fill(Number.MAX_SAFE_INTEGER);
@@ -23,26 +22,17 @@ export default function aStarSearch(graphMap, startNode, goalNode) {
     if (currNode === goalNode) {
       const path = reconstructPath(parents, currNode);
       const totalDistance = countTotalDistance(path, graphMap);
-      console.log(parents);
-      console.log(path);
-      console.log(totalDistance);
+     
       return [path, totalDistance];
     }
 
-    console.log(currNode);
 
     // Loop through all adjacent nodes of the current node
     for (const adjNode of graphMap.getAdjacentNodes(currNode)) {
-      console.log('adjNode:', adjNode);
 
       // Calculate the tentative g-score of the adjacent node
       const tentativeGScore =
         gScores[currNode] + graphMap.getEdgeDistance(currNode, adjNode);
-
-      console.log('currNode:', currNode);
-      console.log(goalNode);
-
-      console.log(tentativeGScore, "andd", gScores[adjNode]);
 
       if (tentativeGScore < gScores[adjNode]) {
         parents[adjNode] = currNode;
@@ -53,7 +43,6 @@ export default function aStarSearch(graphMap, startNode, goalNode) {
         }
         else {
           openNodes.enqueue(adjNode, gScores[adjNode] + hScore);
-          console.log("apakah di enqueue: ", openNodes);
         }
       }
     }

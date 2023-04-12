@@ -12,9 +12,6 @@ class GraphMap {
   }
 
   getAdjacentNodes(nodeIndex) {
-    console.log(this.adjMatrix);
-    console.log(nodeIndex);
-    console.log(this.adjMatrix[nodeIndex]);
     const adjacentNodes = [];
 
     for (let i = 0; i < this.adjMatrix[nodeIndex].length; i++) {

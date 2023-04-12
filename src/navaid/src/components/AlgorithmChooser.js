@@ -9,7 +9,6 @@ const AlgorithmChooser = (props) => {
   const [startNode, setStartNode] = useState("0");
   const [goalNode, setGoalNode] = useState("0");
   const [errorMessage, setErrorMessage] = useState("");
-
   const handleUCSChange = () => {
     setIsUCS(!isUCS);
   };
@@ -21,7 +20,6 @@ const AlgorithmChooser = (props) => {
   const handleStartNodeChange = (event) => {
     const selectedIndex = event.target.selectedIndex;
     const selectedValue = event.target.options[selectedIndex].value;
-    console.log(selectedValue);
     setStartNode(selectedValue);
   };
 
@@ -30,7 +28,6 @@ const AlgorithmChooser = (props) => {
     const selectedIndex = event.target.selectedIndex;
     // Get the value of the selected option by using the index to access the options array
     const selectedValue = event.target.options[selectedIndex].value;
-    console.log(selectedValue);
     setGoalNode(selectedValue);
   };
 
@@ -140,6 +137,7 @@ const AlgorithmChooser = (props) => {
           startNode={startNode}
           goalNode={goalNode}
           graph={props.mapInput}
+          content = {props.content}
         />
       )}
       {isSearching && isAStar && (
@@ -148,6 +146,7 @@ const AlgorithmChooser = (props) => {
           startNode={startNode}
           goalNode={goalNode}
           graph={props.mapInput}
+          content={props.content}
         />
       )}
     </div>
