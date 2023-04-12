@@ -33,8 +33,6 @@ export default function aStarSearch(graphMap, startNode, goalNode) {
 
     // Loop through all adjacent nodes of the current node
     for (const adjNode of graphMap.getAdjacentNodes(currNode)) {
-      console.log("adjNode:", adjNode);
-
       // Calculate the tentative g-score of the adjacent node
       const tentativeGScore =
         gScores[currNode] + graphMap.getEdgeDistance(currNode, adjNode);

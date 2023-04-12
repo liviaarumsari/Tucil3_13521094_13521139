@@ -43,8 +43,6 @@ function GraphChooser(props) {
         }
         const nodeNames = [];
         const nodePoints = [];
-        console.log("Ini graph chooser : ")
-        console.log(lines)
         for (let i = size + 1; i < lines.length; i++) {
           const lineParts = lines[i].split(":");
           const simpul = lineParts[0].trim();
@@ -52,13 +50,11 @@ function GraphChooser(props) {
           nodeNames.push(simpul);
           nodePoints.push(new Point(x, y));
         }
-        console.log(nodeNames)
-        console.log(adjMatrix)
+       
         let mapInput = new GraphMap(adjMatrix, nodeNames, nodePoints);
         props.onFileUpload(mapInput);
         setFileContent(mapInput);
-        console.log("Isi File Content : ")
-        console.log(fileContent)
+       
         setShowGraphVisualizer(true);
       };
       reader.readAsText(file);
