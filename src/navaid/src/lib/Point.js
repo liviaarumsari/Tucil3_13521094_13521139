@@ -8,6 +8,11 @@ class Point {
     return `(${this.x}, ${this.y})`;
   }
 
+  /**
+   * Euclidean distance between two Points
+   * @param {Point} otherPoint 
+   * @returns 
+   */
   distanceTo(otherPoint) {
     const dx = otherPoint.x - this.x;
     const dy = otherPoint.y - this.y;
