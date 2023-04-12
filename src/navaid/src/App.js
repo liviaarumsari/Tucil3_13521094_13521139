@@ -23,7 +23,7 @@ function App() {
       {activePage === "File Input" &&
         <>
           <GraphChooser onFileUpload={fileUploadHandler}/>
-          {mapInput && <AlgorithmChooser mapInput={mapInput}/>}
+          <AlgorithmChooser mapInput={mapInput}/>
         </>
       }
       {activePage !== "File Input" &&

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Card from "./Card.js";
 import ResultVisualizer from "./ResultVisualizer.js";
 
@@ -8,6 +8,7 @@ const AlgorithmChooser = (props) => {
   const [isSearching, setIsSearching] = useState(false);
   const [startNode, setStartNode] = useState("");
   const [goalNode, setGoalNode] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleUCSChange = () => {
     setIsUCS(!isUCS);
@@ -28,6 +29,22 @@ const AlgorithmChooser = (props) => {
   const handleSearch = () => {
     setIsSearching(true);
   };
+
+  useEffect(() => {
+    if (isSearching) {
+      if (!props.mapInput) {
+        setErrorMessage("Please upload a map.");
+      } else if (!isUCS && !isAStar) {
+        setErrorMessage("Please select at least one algorithm.");
+      } else if (!startNode) {
+        setErrorMessage("Please enter a starting node.");
+      } else if (!goalNode) {
+        setErrorMessage("Please enter a goal node.");
+      }
+    } else {
+      setErrorMessage("");
+    }
+  }, [isUCS, isAStar, props.mapInput, startNode, goalNode, isSearching]);
 
   return (
     <div>
@@ -62,25 +79,35 @@ const AlgorithmChooser = (props) => {
             Choose nodes
           </label>
           <div className="flex flex-row">
-            <div className="flex flex-col">
+            <div className="flex flex-col mr-8">
               <label htmlFor="startNode">Starting node</label>
-              <input
-                type="text"
+              <select
                 id="startNode"
-                className="form-input rounded-l-md flex-1 mr-2 px-4 py-2"
+                className="form-select rounded-l-md flex-1 mr-2 px-4 py-2"
                 value={startNode}
                 onChange={handleStartNodeChange}
-              />
+              >
+                {props.mapInput && props.mapInput.adjMatrix.map((row, rowIndex) => (
+                  <option key={`startNode-${rowIndex}`} value={rowIndex}>
+                    {rowIndex+1}
+                  </option>
+                ))}
+              </select>
             </div>
             <div className="flex flex-col">
               <label htmlFor="goalNode">Goal node</label>
-              <input
-                type="text"
+              <select
                 id="goalNode"
-                className="form-input rounded-r-md flex-1 ml-2 px-4 py-2"
+                className="form-select rounded-r-md flex-1 ml-2 px-4 py-2"
                 value={goalNode}
                 onChange={handleGoalNodeChange}
-              />
+              >
+                {props.mapInput && props.mapInput.adjMatrix.map((row, rowIndex) => (
+                  <option key={`startNode-${rowIndex}`} value={rowIndex}>
+                    {rowIndex+1}
+                  </option>
+                ))}
+              </select>
             </div>
           </div>
         </div>
@@ -91,20 +118,25 @@ const AlgorithmChooser = (props) => {
         >
           Search
         </button>
+        {errorMessage && (
+          <label className="text-red-500 mb-4 text-sm !important">
+            {errorMessage}
+          </label>
+        )}
       </Card>
       {isSearching && isUCS && (
         <ResultVisualizer
           algorithm={"UCS"}
-          startNode={startNode-1}
-          goalNode={goalNode-1}
+          startNode={startNode - 1}
+          goalNode={goalNode - 1}
           graph={props.mapInput}
         />
       )}
       {isSearching && isAStar && (
         <ResultVisualizer
           algorithm={"A*"}
-          startNode={startNode-1}
-          goalNode={goalNode-1}
+          startNode={startNode - 1}
+          goalNode={goalNode - 1}
           graph={props.mapInput}
         />
       )}

@@ -84,13 +84,13 @@ function GraphChooser(props) {
       {showGraphVisualizer && (
         <div className="flex flew-row">
         <GraphVisualizer mapInput={fileContent} path={[]} />
-        <div className="mx-8">
+        <div className="mx-8 w-48">
           <label className="block text-gray-700 font-bold mb-2">Nodes:</label>
-          <ul className="list-disc list-inside">
+          <ul className="list-disc list-inside flex flex-wrap">
             {fileContent.nodeNames.map((node, index) => (
               <li
                 key={index}
-                className="text-gray-700 overflow-ellipsis overflow-hidden whitespace-nowrap list-none"
+                className="text-gray-700 text-sm list-none"
               >
                 {index + 1}. {node}
               </li>
