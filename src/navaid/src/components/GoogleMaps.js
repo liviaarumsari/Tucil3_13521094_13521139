@@ -1,14 +1,12 @@
 import React from "react";
-import { useState, useRef } from "react";
+import { useState } from "react";
 import {
   useJsApiLoader,
   GoogleMap,
   Marker,
-  Autocomplete,
   Polyline,
 } from "@react-google-maps/api";
 
-import { geocodeByAddress, getLatLng } from "react-places-autocomplete";
 const GoogleMaps = () => {
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: "AIzaSyCkEj30-VdzF1H9z1oGdkktZTrzDLrrl-Y",
@@ -16,16 +14,44 @@ const GoogleMaps = () => {
   });
   const [map, setMap] = useState(/** @type google.maps.Map */ (null));
   const [markers, setMarkers] = useState([]);
-  
+  const [fileName, setFileName] = useState("");
+  const [coordinates, setCoordinates] = useState(null);
+  const [errorMessage, setErrorMessage] = useState("");
   const [mapCenter, setMapCenter] = useState({
     lat: -6.914744,
     lng: 107.60981,
   });
-  const [latLng, setLatLng] = useState({ lat: null, lng: null });
-  const [endLatLng, setEndLatLng] = useState({ lat: null, lng: null });
-  const [polylinePoints, setPolylinePoints] = useState([])
-  const originRef = useRef();
-  const destiantionRef = useRef();
+
+  const handleFileUpload = (event) => {
+    const file = event.target.files[0];
+    const fileNameParts = file.name.split(".");
+    const fileExtension = fileNameParts[fileNameParts.length - 1];
+    if (fileExtension !== "txt") {
+      setErrorMessage("Invalid file type. Please upload a .txt file.");
+    } else {
+      setFileName(file.name);
+      setErrorMessage("");
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const contents = e.target.result;
+        const lines = contents.split(/\r?\n/); // Split by new lines
+        const size = parseInt(lines[0]);
+        const nodePoints = [];
+        for (let i = size + 1; i < lines.length; i++) {
+          const lineParts = lines[i].split(":");
+          const [x, y] = lineParts[1].split(" ").map((s) => parseFloat(s));
+          nodePoints.push({ lat: x, lng: y });
+        }
+        let newMarkers = markers.concat(nodePoints)
+        console.log(newMarkers)
+        setMarkers(newMarkers)
+        setCoordinates(nodePoints);
+      };
+      reader.readAsText(file);
+    }
+  };
+
+  const [polylinePoints, setPolylinePoints] = useState([]);
 
   const onMapClick = (e) => {
     const newObj = {
@@ -33,51 +59,16 @@ const GoogleMaps = () => {
       lng: e.latLng.lng(),
     };
     setMarkers([...markers, newObj]);
-    setPolylinePoints([...polylinePoints,newObj])
+    setPolylinePoints([...polylinePoints, newObj]);
   };
   if (!isLoaded) {
     return <div>Loading...</div>;
   }
 
-  async function calculateRoute() {
-    if (originRef.current.value === "" || destiantionRef.current.value === "") {
-      return;
-    }
-    try {
-      const results = await geocodeByAddress(originRef.current.value);
-      const latLngOrigin = await getLatLng(results[0]);
-      setLatLng(latLngOrigin);
-      setMarkers([...markers,latLngOrigin])
-      const results2 = await geocodeByAddress(destiantionRef.current.value);
-      const latLngDest = await getLatLng(results2[0]);
-      setEndLatLng(latLngDest);
-      setMarkers([...markers,latLngDest])
-      setMapCenter(latLngOrigin);
-    } catch (error) {
-      console.error("Error fetching geolocation:", error);
-    }
-  }
   return (
     <div>
-      <Autocomplete>
-        <input
-          type="text"
-          placeholder="Origin"
-          style={{ width: "100%" }}
-          ref={originRef}
-        />
-      </Autocomplete>
-      <Autocomplete>
-        <input
-          type="text"
-          placeholder="Destination"
-          style={{ width: "100%" }}
-          ref={destiantionRef}
-        />
-      </Autocomplete>
-      <button type="submit" onClick={calculateRoute}>
-        Calculate
-      </button>
+      <input type="file" onChange={handleFileUpload}></input>
+      {errorMessage && <div>Error...</div>}
       <div class="h-screen">
         <div class="h-full">
           <GoogleMap
@@ -93,20 +84,18 @@ const GoogleMaps = () => {
             onClick={onMapClick}
             onLoad={(map) => setMap(map)}
           >
-            {/* <Marker position={latLng} />
-              <Marker position={endLatLng} />
-              <Polyline path={[latLng,endLatLng]} options={{
-                strokeColor:"#000"
-              }} /> */}
             {markers.map((marker, index) => (
               <Marker
                 key={index}
                 position={{ lat: marker.lat, lng: marker.lng }}
               />
             ))}
-            {polylinePoints.length > 1 && 
-              <Polyline path={polylinePoints} options={{strokeColor:"#000"}} />
-            }
+            {polylinePoints.length > 1 && (
+              <Polyline
+                path={polylinePoints}
+                options={{ strokeColor: "#000" }}
+              />
+            )}
           </GoogleMap>
         </div>
       </div>

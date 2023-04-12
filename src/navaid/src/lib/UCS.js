@@ -6,6 +6,7 @@ var prioqueue = [
   ]
   
 function getLastElement(obj){
+    console.log(obj)
     return obj.nodes[obj.nodes.length-1]
 }
 
@@ -57,12 +58,13 @@ export default function ucs(adjMatrix, startNode, targetNode) {
     visited[startNode] = true;
     newQueue(start,0);
     getNodes(adjMatrix,visited);
+    let i = 0;
     while(getLastElement(prioqueue[0]) !== targetNode && prioqueue.length !== 0){
         getNodes(adjMatrix,visited)
     }
     if(prioqueue.length === 0){
         return [prioqueue,-1];
     }else{
-        return [prioqueue,prioqueue[0].count]
+        return [prioqueue[0].nodes,prioqueue[0].count]
     }
 }
