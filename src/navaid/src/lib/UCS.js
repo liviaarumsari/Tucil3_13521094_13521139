@@ -61,7 +61,7 @@ export default function ucs(adjMatrix, startNode, targetNode) {
     visited[startNode] = true;
     newQueue(start,0);
     getNodes(adjMatrix,visited);
-    while(getLastElement(prioqueue[0]) !== targetNode && prioqueue.length !== 0){
+    while( prioqueue.length !== 0 && getLastElement(prioqueue[0]) !== targetNode){
         getNodes(adjMatrix,visited)
     }
     if(prioqueue.length === 0){
