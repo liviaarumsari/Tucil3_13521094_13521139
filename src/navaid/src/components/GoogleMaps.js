@@ -10,7 +10,8 @@ import haversine from "haversine-distance";
 
 const GoogleMaps = (props) => {
   const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: "AIzaSyCkEj30-VdzF1H9z1oGdkktZTrzDLrrl-Y",
+    // Isi api anda di sini
+    googleMapsApiKey: "",
     libraries: ["places"],
   });
   // Fungsi untuk mengatur map
@@ -23,8 +24,8 @@ const GoogleMaps = (props) => {
   const [count, setCount] = useState(0);
   // Menandakan kemana map harus difokuskan
   const [mapCenter, setMapCenter] = useState({
-    lat: -6.914744,
-    lng: 107.60981,
+    lat: -6.243540 ,
+    lng: 106.628699,
   });
   // Bernilai true jika input berupa .txt
   const fromText = props.fromInput;
@@ -84,7 +85,7 @@ const GoogleMaps = (props) => {
 
   return (
     <div>
-      {!fromText && <p>Distance : {count} </p>}
+      {!fromText && <p>Distance : {count} meters</p>}
       <div class="h-screen">
         <div class="h-full">
           <GoogleMap

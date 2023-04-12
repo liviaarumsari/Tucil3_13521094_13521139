@@ -60,7 +60,11 @@ $ cd src/navaid
 ```sh 
 $ npm install
 ```
-3. Jalankan aplikasi
+3. Dapatkan API KEY untuk google maps di https://cloud.google.com/
+
+4. Masukkan API KEY anda ke dalam file GoogleMaps.js
+
+5. Jalankan aplikasi
 ```sh 
 $ npm start
 ```
