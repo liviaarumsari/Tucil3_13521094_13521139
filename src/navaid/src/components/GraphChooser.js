@@ -11,6 +11,11 @@ function GraphChooser(props) {
   const [showGraphVisualizer, setShowGraphVisualizer] = useState(false);
 
   const handleFileUpload = (event) => {
+    if (!event.target.files.length) {
+      setErrorMessage("No file selected.");
+      return;
+    }
+    
     const file = event.target.files[0];
     const fileNameParts = file.name.split(".");
     const fileExtension = fileNameParts[fileNameParts.length - 1];

@@ -72,7 +72,7 @@ const GraphVisualizer = (props) => {
     }
   }, [props.path]);
 
-  return <div ref={cyRef} className="bg-light-primary" style={{ height: "40vh", width: "100%" }} />;
+  return <div ref={cyRef} className="bg-light-primary border-2 border-solid border-main-primary rounded-md" style={{ height: "40vh", width: "100%" }} />;
 };
 
 function getElementsFromMatrix(matrix, nodeNames) {
