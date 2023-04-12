@@ -24,19 +24,21 @@ const ResultVisualizer = (props) => {
 
   useEffect(() => {
     if (props.algorithm === "UCS") {
-      console.log(props.graph.adjMatrix);
       // Calculate path and total distance using UCS algorithm
       // ...
       const [prioqueue, count] = ucs(
         props.graph.adjMatrix,
-        props.startNode,
-        props.goalNode
+        parseInt(props.startNode),
+        parseInt(props.goalNode)
       );
-
-      setPath(/* UCS path */);
-      setTotalDistance(count);
+      if(count !== -1){
+        const pathEdgeID = pathToEdgeID(prioqueue)
+        setPath(pathEdgeID);
+        setTotalDistance(count);
+        setIsPathFound(true)
+      }
+          
     } else if (props.algorithm === "A*") {
-      console.log(props.startNode, props.goalNode);
       const [pathRes, distRes] = aStarSearch(
         props.graph,
         parseInt(props.startNode),
@@ -45,7 +47,9 @@ const ResultVisualizer = (props) => {
       console.log(pathRes);
       if (pathRes !== null) {
         setIsPathFound(true);
+        console.log(pathRes)
         const pathEdgeID = pathToEdgeID(pathRes);
+        console.log("Input buat set path : ",pathEdgeID)
         setPath(pathEdgeID);
         setTotalDistance(distRes);
       } else {
